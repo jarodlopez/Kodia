@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PLANTILLA: reemplaza "MI TIENDA", la descripción, el dominio y la
+         imagen OG con los datos del cliente. Ver TEMPLATE.md -->
+    <title>MI TIENDA | Tienda Online</title>
+    <meta name="description" content="MI TIENDA – Tienda online con entregas a todo el país.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://mitienda.vercel.app/">
+
+    <!-- Open Graph / Redes Sociales -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mitienda.vercel.app/">
+    <meta property="og:title" content="MI TIENDA | Tienda Online">
+    <meta property="og:description" content="Tienda online con entregas a todo el país.">
+    <meta property="og:image" content="">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MI TIENDA">
+    <meta property="og:site_name" content="MI TIENDA">
+    <meta property="og:locale" content="es_NI">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MI TIENDA | Tienda Online">
+    <meta name="twitter:description" content="Tienda online con entregas a todo el país.">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:image:alt" content="MI TIENDA">
+
+    <!-- Datos estructurados (JSON-LD) — ajusta @type a la vertical del cliente:
+         ClothingStore, HardwareStore, Store, etc. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "MI TIENDA",
+      "description": "Tienda online con entregas a todo el país.",
+      "url": "https://mitienda.vercel.app/"
+    }
+    </script>
+
+    <!-- 4 preconnects (máximo de Lighthouse): CDN de imágenes, fuentes, React, Firebase -->
+    <link rel="preconnect" href="https://wsrv.nl" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://i.ibb.co">
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+
+    <!-- Fuentes: carga no bloqueante para eliminar el render-blocking stylesheet -->
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Preload de los scripts CDN para que el navegador los descargue en paralelo -->
+    <link rel="preload" as="script" crossorigin href="https://unpkg.com/react@18/umd/react.production.min.js">
+    <link rel="preload" as="script" crossorigin href="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+    <link rel="preload" as="script" href="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js">
+    <link rel="preload" as="script" href="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js">
+
+    <!-- CSS compilado (Tailwind + estilos propios). Generado con `npm run build`. -->
+    <link rel="stylesheet" href="/dist/styles.css">
+
+    <!-- Librerías de runtime (defer = no bloquean el render; se ejecutan en orden
+         antes de app.js, que contiene la init de Firebase como primer módulo). -->
+    <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- App pre-compilada (JSX ya transpilado + init de Firebase). Generado con `npm run build`. -->
+    <script src="/dist/app.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>

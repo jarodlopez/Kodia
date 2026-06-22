@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#000"/>
+  <text x="256" y="370" font-family="Arial Black,Arial,sans-serif" font-size="340" font-weight="900" fill="#ff003c" text-anchor="middle">K</text>
+  <rect x="0" y="440" width="512" height="72" fill="#ff003c"/>
+  <text x="256" y="500" font-family="Arial,sans-serif" font-size="52" font-weight="700" fill="#000" text-anchor="middle" letter-spacing="8">ADMIN</text>
+</svg>

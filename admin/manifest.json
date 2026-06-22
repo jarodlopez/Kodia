@@ -1,0 +1,56 @@
+{
+  "name": "Admin de la Tienda",
+  "short_name": "Admin",
+  "description": "Panel de administración de la tienda",
+  "start_url": "/admin/",
+  "id": "/admin/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff003c",
+  "orientation": "any",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/admin/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/admin/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/admin/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/admin/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/admin/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Órdenes",
+      "url": "/admin/?view=ORDERS",
+      "description": "Ver pedidos recientes"
+    },
+    {
+      "name": "Inventario",
+      "url": "/admin/?view=INVENTORY",
+      "description": "Gestionar productos"
+    }
+  ]
+}

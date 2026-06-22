@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Plantilla white-label ===
+   El color de acento se controla con --accent / --accent-rgb,
+   que el storefront sobreescribe en runtime con el color
+   configurado en el admin (Diseño → Marca). */
+:root {
+  --accent: #ffffff;
+  --accent-rgb: 255 255 255;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #000;
+  color: #fff;
+  background-image: linear-gradient(rgb(var(--accent-rgb) / 0.04) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--accent-rgb) / 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  overscroll-behavior-y: none;
+}
+.brutalist-card { border: 1px solid #222; background: #050505; border-radius: 16px; overflow: hidden; transition: all 0.25s ease; }
+.brutalist-card:hover { border-color: var(--accent); transform: translate(-2px, -2px); box-shadow: 0 0 24px rgb(var(--accent-rgb) / 0.3), 0 8px 32px rgba(0,0,0,0.5); }
+.brutalist-btn { background: var(--accent); color: #000; border: 2px solid var(--accent); border-radius: 10px; transition: all 0.25s ease; text-transform: uppercase; }
+.brutalist-btn:hover:not(:disabled) { background: #000; color: var(--accent); box-shadow: 0 0 15px rgb(var(--accent-rgb) / 0.55), 0 0 40px rgb(var(--accent-rgb) / 0.2); }
+.brutalist-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.brutalist-btn-outline { background: #000; color: #fff; border: 1px solid #333; border-radius: 8px; transition: all 0.25s ease; }
+.brutalist-btn-outline:hover, .brutalist-btn-outline.active { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.25); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #333; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.text-outline { -webkit-text-stroke: 1px var(--accent); color: transparent; filter: drop-shadow(0 0 8px rgb(var(--accent-rgb) / 0.7)); }
+.marquee-container { width: 100%; overflow: hidden; white-space: nowrap; background-color: var(--accent); color: #000; padding: 4px 0; position: relative; }
+.marquee-content { display: inline-block; min-width: 100%; }
+.img-fade { opacity: 0; transition: opacity 0.5s ease-in-out; }
+.img-loaded { opacity: 1; }
+img { -webkit-user-drag: none; -webkit-touch-callout: none; pointer-events: none; }
+
+/* === Efectos neon === */
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 0 0 7px var(--accent), 0 0 20px rgb(var(--accent-rgb) / 0.5), 0 0 42px rgb(var(--accent-rgb) / 0.3);
+    opacity: 1;
+  }
+  20%, 24%, 55% { text-shadow: none; opacity: 0.85; }
+}
+.neon-flicker { animation: neonFlicker 7s ease-in-out infinite; }

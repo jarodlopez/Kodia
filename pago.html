@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Seguro – MI TIENDA</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#000000">
+
+    <!-- 4 preconnects (máximo de Lighthouse): CDN de imágenes, fuentes, React, Firebase -->
+    <link rel="preconnect" href="https://wsrv.nl" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://i.ibb.co">
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+
+    <!-- Fuentes: carga no bloqueante para eliminar el render-blocking stylesheet -->
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Preload de los scripts CDN para que el navegador los descargue en paralelo -->
+    <link rel="preload" as="script" crossorigin href="https://unpkg.com/react@18/umd/react.production.min.js">
+    <link rel="preload" as="script" crossorigin href="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+
+    <link rel="stylesheet" href="/dist/styles.css">
+
+    <!-- La página de pago NO usa Firebase (todo pasa por /api/payment), por lo que
+         solo carga React. defer = no bloquea el render. -->
+    <script defer crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script defer crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        // La página de pago no usa Firebase directamente: todo pasa por
+        // /api/payment. Solo necesita la key de ImgBB para subir el comprobante.
+        // PLANTILLA: reemplaza con la key de ImgBB del cliente (ver TEMPLATE.md).
+        var IMGBB_API_KEY = "TU_IMGBB_API_KEY";
+    </script>
+    <script src="/dist/pago.js" defer></script>
+</body>
+</html>
