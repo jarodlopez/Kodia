@@ -45,7 +45,25 @@ sin tocar código.
    - `index.html` (title, meta, JSON-LD — cambia `@type` al rubro: `ClothingStore`, `HardwareStore`, `Store`), `product.html`, `checkout.html`, `middleware.js` (`BRAND`, `SITE`), `sitemap.xml`, `robots.txt`
 6. **Compila y despliega**: `npm install && npm run build`, push a GitHub y conecta el repo en Vercel (no necesita build en Vercel: `vercel.json` ya lo desactiva, los `dist/` van commiteados).
 7. **Primer login en `/admin`**: el primer usuario queda como super admin. Configura Marca, Pagos, Envíos y apaga los módulos que el cliente no use.
-8. **Firestore Rules** (recomendado): restringe escritura de `settings/*`, `products`, `discountCodes`, `popupBanners` a usuarios autenticados; `orders` permite create público y lectura/edición autenticada.
+8. **Firestore Rules** (OBLIGATORIO — no saltear). El repo incluye `firestore.rules`
+   ya escritas y `firebase.json`. Sin ellas, Firestore queda abierto: cualquiera
+   podría leer los pedidos de tus clientes (datos personales) o hacerse super admin.
+   Desplegalas antes de salir a producción:
+
+   ```bash
+   npm i -g firebase-tools        # solo la primera vez
+   firebase login
+   firebase use TU_PROYECTO       # o: firebase use --add
+   firebase deploy --only firestore:rules
+   ```
+
+   Modelo (ver `firestore.rules`): catálogo y config se LEEN público; escribir
+   `settings/*`, `products`, `discountCodes`, `popupBanners` exige usuario
+   autenticado; `orders` permite create público acotado (estado inicial seguro,
+   sin token de pago) y lectura/edición solo autenticada; `analytics` solo permite
+   create. La página `/pago` no toca Firestore directo: pasa por `/api/payment`
+   (cuenta de servicio). El control fino por rol del panel es client-side y las
+   cuentas de Auth se crean a mano, así que "autenticado" = personal de confianza.
 
 ## Estructura de datos (Firestore)
 

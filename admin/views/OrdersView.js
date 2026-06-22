@@ -48,7 +48,9 @@ window.OrdersView = ({ orders, filteredOrders, selectedOrder, setSelectedOrder,
         if (!selectedOrder || generatingLink) return;
         setGeneratingLink(true);
         try {
-            const token = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
+            // Token criptográficamente aleatorio: es lo único que protege el
+            // acceso a la orden en /pago (la API valida token === order.paymentToken).
+            const token = crypto.randomUUID().replace(/-/g, '');
             await db.collection("orders").doc(selectedOrder.id).update({
                 paymentToken: token,
                 status: 'payment_link_sent',

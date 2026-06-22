@@ -82,7 +82,8 @@ function CheckoutApp() {
                     phone: orderData.customer.phone,
                     address: `${orderData.customer.address} (${orderData.shippingZone})`,
                     total: orderData.total,
-                    orderDetails: detalles
+                    orderDetails: detalles,
+                    brandName: branding.brandName
                 })
             });
         } catch { /* no interrumpir UX */ }

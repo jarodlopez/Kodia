@@ -1,28 +1,52 @@
-# Kodia Shop — Plantilla de tienda online
+# Kodia Shop — Plantilla white-label de tienda online
 
-Tienda streetwear — React 18 (vía CDN) + Firebase Firestore. Sin framework
-de build pesado: el JSX se pre-compila a un solo archivo con esbuild y el CSS
-de Tailwind se genera estático. El navegador del cliente ya **no** compila nada.
+Plantilla de e-commerce lista para clonar por cliente: **React 18 (vía CDN) +
+Firebase Firestore + Vercel**. Sin framework de build pesado: el JSX se
+pre-compila a bundles con esbuild y el CSS de Tailwind se genera estático, así
+que el navegador del cliente **no** compila nada en runtime.
+
+Toda la identidad y el comportamiento de la tienda (marca, color, moneda,
+zonas de envío, datos de pago, módulos activos, roles) se configuran **desde el
+admin**, sin tocar código. Se adapta a cualquier rubro (ropa, ferretería,
+cosméticos, etc.).
+
+> **Para poner en marcha una tienda nueva, seguí [`TEMPLATE.md`](./TEMPLATE.md)** —
+> tiene el paso a paso de Firebase, ImgBB, placeholders, SEO, Vercel y reglas de
+> seguridad (estas últimas son **obligatorias** antes de producción).
 
 ## Estructura
 
 ```
-index.html                 → shell HTML (carga dist/styles.css y dist/app.js)
-admin.html                 → panel de administración
-js/                        → código fuente (se edita aquí)
-  utils.js                 → helpers compartidos
-  App.js                   → componente raíz + estado + handlers
-  components/              → HomeView, ProductDetail, Cart, PopupBanner, OrderConfirmModal
+index.html                 → vitrina (carga dist/styles.css y dist/app.js)
+product.html               → detalle de producto (ruta /producto/:id)
+checkout.html              → checkout
+pago.html                  → página de pago segura (ruta /pago/:id)
+admin/index.html           → panel de administración (ruta /admin)
+admin/views/               → vistas del panel (Inventario, Órdenes, Diseño…)
+admin/admin-panel.js       → shell + estado del admin
+js/                        → código fuente de la tienda (se edita aquí)
+  firebase-init.js         → init de Firebase + llaves de la tienda
+  utils.js                 → helpers compartidos (branding, precios, tracking)
+  App.js                   → componente raíz de la vitrina
+  components/              → Home, ProductDetail, Cart, PopupBanner, OrderConfirmModal
+  *-entry.js               → bootstraps de product / checkout / pago
 src/input.css              → directivas Tailwind + estilos propios
 tailwind.config.js         → tema (colores, fuentes, animaciones)
-build.js                   → compila js/ → dist/app.js
+build.js                   → compila js/ y admin/ → dist/*
 dist/                      → SALIDA del build (se commitea; lo sirve Vercel)
-api/hubspot.js             → función serverless de Vercel
+api/                       → funciones serverless de Vercel
+  track.js                 → tracking server-side (analytics anónimos por IP)
+  payment.js               → entrega/actualiza órdenes vía cuenta de servicio
+  hubspot.js               → sync opcional a HubSpot + aviso por Telegram
+middleware.js              → SEO dinámico por producto (Edge Middleware)
+firestore.rules            → reglas de seguridad (desplegar — ver TEMPLATE.md)
+firebase.json              → config de Firebase CLI
+vercel.json                → rewrites de rutas y desactivación del build en Vercel
 ```
 
 ## Cómo trabajar
 
-1. Editás los archivos en `js/` y/o estilos en `src/input.css`.
+1. Editás los archivos en `js/`, `admin/` y/o estilos en `src/input.css`.
 2. Antes de subir, regenerás el build:
 
    ```bash
@@ -30,12 +54,13 @@ api/hubspot.js             → función serverless de Vercel
    npm run build
    ```
 
-   Esto produce `dist/styles.css` (CSS minificado) y `dist/app.js`
-   (JSX transpilado y minificado).
-3. Commiteás **tanto los fuentes (`js/`, `src/`) como `dist/`** y subís.
+   Esto produce `dist/styles.css` (CSS minificado) y los bundles JS
+   (`app.js`, `product.js`, `checkout.js`, `pago.js`, `admin-views.js`,
+   `admin-panel.js`) transpilados y minificados.
+3. Commiteás **tanto los fuentes (`js/`, `admin/`, `src/`) como `dist/`** y subís.
 
-> Importante: si editás `js/` o `src/` pero **no** corrés `npm run build`,
-> la web seguirá mostrando la versión anterior (la de `dist/`).
+> Importante: si editás los fuentes pero **no** corrés `npm run build`, la web
+> seguirá mostrando la versión anterior (la de `dist/`).
 
 ### Atajos
 
@@ -51,6 +76,5 @@ No requiere acción manual:
   Una foto de varios MB suele quedar en ~150-250 KB. Ver `compressImage`.
 - **Al mostrar**: las imágenes de ImgBB se sirven vía `wsrv.nl` (sobre
   Cloudflare), que las convierte a WebP y las redimensiona al ancho que pide
-  cada lugar de la web. Esto también optimiza las imágenes ya subidas, sin
-  re-subir nada. Si el proxy fallara, cada imagen cae automáticamente a su URL
-  original de ImgBB (`onError`). Ver `optimizeImg` en `js/utils.js`.
+  cada lugar de la web. Si el proxy fallara, cada imagen cae automáticamente a
+  su URL original de ImgBB (`onError`). Ver `optimizeImg` en `js/utils.js`.

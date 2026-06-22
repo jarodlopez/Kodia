@@ -3,8 +3,9 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Método no permitido' });
     }
 
-    const { name, phone, address, total, orderNumber, orderDetails } = req.body;
-    
+    const { name, phone, address, total, orderNumber, orderDetails, brandName } = req.body;
+    const brand = (brandName || 'LA TIENDA').toString().slice(0, 60);
+
     // Sacamos las llaves secretas de Vercel
     const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
     const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
 
         // 2. ENVIAR NOTIFICACIÓN A TELEGRAM
         if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-            const mensajeTelegram = `🚨 *NUEVA ORDEN EN MI TIENDA* 🚨\n\n👤 *Cliente:* ${name}\n📱 *Tel:* ${phone}\n📍 *Zona/Dir:* ${address}\n\n🛒 *Pedido:* ${orderDetails}\n\n💰 *Total:* ${total}\n📦 *Orden:* #${orderNumber}`;
+            const mensajeTelegram = `🚨 *NUEVA ORDEN EN ${brand}* 🚨\n\n👤 *Cliente:* ${name}\n📱 *Tel:* ${phone}\n📍 *Zona/Dir:* ${address}\n\n🛒 *Pedido:* ${orderDetails}\n\n💰 *Total:* ${total}\n📦 *Orden:* #${orderNumber}`;
             
             await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: 'POST',

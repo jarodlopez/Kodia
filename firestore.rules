@@ -1,0 +1,79 @@
+rules_version = '2';
+
+// Reglas de seguridad de Kodia Shop.
+// Modelo: la tienda pública (vitrina, checkout) solo LEE catálogo/config y CREA
+// órdenes y eventos de analytics. Todo lo demás (gestión) exige usuario
+// autenticado (las cuentas se crean a mano en Firebase Auth → solo personal de
+// confianza). La página /pago no toca Firestore directamente: pasa por
+// /api/payment, que se autentica como cuenta de servicio y saltea estas reglas.
+//
+// Desplegar con:  firebase deploy --only firestore:rules
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Super admin = el correo autenticado figura en settings/platform.superAdmins
+    function isSuperAdmin() {
+      return isSignedIn()
+        && request.auth.token.email != null
+        && request.auth.token.email in
+           get(/databases/$(database)/documents/settings/platform).data.superAdmins;
+    }
+
+    // settings/store → branding, zonas de envío, paymentInfo, hero, categorías.
+    // Lectura pública (la vitrina la necesita); escritura solo personal logueado.
+    match /settings/store {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // settings/platform → superAdmins[], users[], roles{}.
+    // Lectura pública (el admin resuelve permisos en el cliente).
+    // create: bootstrap del primer login (queda como super admin).
+    // update/delete: solo super admins (impide auto-asignarse el rol).
+    match /settings/platform {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isSuperAdmin();
+    }
+
+    // Cualquier otro doc de settings (futuro): lectura pública, escritura logueada.
+    match /settings/{doc} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Catálogo y contenido de la vitrina: lectura pública, escritura logueada.
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+    match /discountCodes/{id} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+    match /popupBanners/{id} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Órdenes: el checkout público puede CREARLAS, pero forzando un estado
+    // inicial seguro (sin token de pago y sin marcarse como pagada). Leerlas y
+    // gestionarlas (token, estado, comprobante) es solo del personal logueado.
+    match /orders/{id} {
+      allow read, update, delete: if isSignedIn();
+      allow create: if request.resource.data.status == 'awaiting_payment_link'
+        && request.resource.data.paymentToken == null;
+    }
+
+    // Analytics: el endpoint /api/track (clave web pública) solo CREA eventos.
+    // No se puede leer ni alterar lo ya escrito salvo personal logueado.
+    match /analytics/{id} {
+      allow create: if request.resource.data.type is string;
+      allow read, update, delete: if isSignedIn();
+    }
+  }
+}

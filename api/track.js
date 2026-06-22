@@ -35,6 +35,30 @@ const toFields = (obj) => {
     return fields;
 };
 
+// Endpoint público (sin auth): acotamos el daño posible. Solo se aceptan los
+// tipos de evento conocidos, y los datos se sanitizan a escalares cortos para
+// que no se pueda inflar/ensuciar la colección con documentos arbitrarios.
+const ALLOWED_TYPES = new Set([
+    'page_view', 'product_view', 'add_to_cart', 'whatsapp_click', 'checkout_started',
+]);
+
+const sanitizeData = (data) => {
+    const clean = {};
+    if (!data || typeof data !== 'object') return clean;
+    let count = 0;
+    for (const [k, v] of Object.entries(data)) {
+        if (count >= 20) break;
+        if (typeof k !== 'string' || k.length > 64) continue;
+        if (typeof v === 'number' && Number.isFinite(v)) { clean[k] = v; count++; }
+        else if (typeof v === 'boolean') { clean[k] = v; count++; }
+        else if (typeof v === 'string') { clean[k] = v.slice(0, 500); count++; }
+        // objetos/arrays se descartan
+    }
+    return clean;
+};
+
+const safeStr = (v, max) => (typeof v === 'string' ? v.slice(0, max) : null);
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Método no permitido' });
@@ -42,7 +66,10 @@ export default async function handler(req, res) {
 
     try {
         const { type, data = {}, userId, sessionId } = req.body || {};
-        if (!type) return res.status(400).json({ error: 'type requerido' });
+        // type es obligatorio y debe ser un evento conocido (no romper UX: 200).
+        if (!type || !ALLOWED_TYPES.has(type)) {
+            return res.status(200).json({ success: false });
+        }
 
         // Vercel coloca la IP del cliente en x-forwarded-for (primer valor).
         const fwd = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || '';
@@ -52,9 +79,9 @@ export default async function handler(req, res) {
         const now = new Date();
         const doc = {
             type,
-            ...data,
-            userId: userId || null,
-            sessionId: sessionId || null,
+            ...sanitizeData(data),
+            userId: safeStr(userId, 64),
+            sessionId: safeStr(sessionId, 64),
             ipHash,
             timestamp: now.toISOString(),
             date: now.toISOString().split('T')[0],
