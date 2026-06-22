@@ -83,7 +83,4 @@ analytics/*         → eventos (page_view, product_view, add_to_cart, whatsapp_
 - **"Variantes"** = el antiguo campo "tallas": sirve para tallas de ropa, medidas de herramientas, presentaciones, etc. Un producto sin variantes se vende como "ÚNICA".
 - El integrador de HubSpot (`/api/hubspot`) es opcional; si el cliente no lo usa, elimina la llamada en `js/checkout-entry.js` o el endpoint fallará silenciosamente (no rompe nada).
 - El color por defecto de la plantilla es blanco/negro neutro; el cliente lo cambia en Diseño → Marca.
-
-## Pendientes al clonar
-
-- Reemplaza los íconos del admin (`admin/icons/`) con el logo del cliente (192px, 512px y SVG) — los actuales son de la primera tienda construida con esta plantilla.
+- Los íconos del admin (`admin/icons/`) son genéricos a propósito (una bolsa de compras neutra, estilo app). No hace falta reemplazarlos por cliente; si igual querés personalizarlos, subí tus PNG/SVG a esa carpeta.

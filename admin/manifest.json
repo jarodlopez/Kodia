@@ -6,7 +6,7 @@
   "id": "/admin/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#ff003c",
+  "theme_color": "#000000",
   "orientation": "any",
   "lang": "es",
   "icons": [

@@ -59,8 +59,10 @@ vercel.json                → rewrites de rutas y desactivación del build en V
    `admin-panel.js`) transpilados y minificados.
 3. Commiteás **tanto los fuentes (`js/`, `admin/`, `src/`) como `dist/`** y subís.
 
-> Importante: si editás los fuentes pero **no** corrés `npm run build`, la web
-> seguirá mostrando la versión anterior (la de `dist/`).
+> **¿Sin compu para compilar?** No hace falta: `vercel.json` está configurado
+> para que **Vercel corra `npm run build` en cada deploy**. Podés editar los
+> fuentes 100% desde GitHub web y Vercel regenera `dist/` al desplegar. El build
+> local es opcional (útil solo para previsualizar antes de subir).
 
 ### Atajos
 

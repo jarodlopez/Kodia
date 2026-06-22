@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#000"/>
-  <text x="256" y="370" font-family="Arial Black,Arial,sans-serif" font-size="340" font-weight="900" fill="#ff003c" text-anchor="middle">K</text>
-  <rect x="0" y="440" width="512" height="72" fill="#ff003c"/>
-  <text x="256" y="500" font-family="Arial,sans-serif" font-size="52" font-weight="700" fill="#000" text-anchor="middle" letter-spacing="8">ADMIN</text>
+  <rect width="512" height="512" rx="114" fill="#0B0B0C"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="28" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M150 200 h212 l14 174 a20 20 0 0 1 -20 22 H156 a20 20 0 0 1 -20 -22 z"/>
+    <path d="M200 200 v-18 a56 56 0 0 1 112 0 v18"/>
+  </g>
 </svg>
